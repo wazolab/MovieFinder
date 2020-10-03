@@ -1,11 +1,13 @@
 {
   "name": "movie-finder",
   "version": "1.0.0",
+  "description": "Nuxt.js test project for LoveToKnow Media job opportunity.",
+  "author": "Noé Viricel <noe.viricel@wazo-lab.io>",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
+    "dev": "NODE_ENV=development nuxt",
+    "build": "NODE_ENV=production nuxt build",
+    "start": "NODE_ENV=production nuxt start",
     "generate": "nuxt generate",
     "test": "jest"
   },
