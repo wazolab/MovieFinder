@@ -1,10 +1,13 @@
 <template>
   <a-layout-header>
-    <h1>
-      <Logo />
-      <span>MovieFinder</span>
-    </h1>
-    <h2>Get infos on latest movies / TV Shows</h2>
+    <nuxt-link to="/">
+      <h1>
+        <Logo />
+        <span>MovieFinder</span>
+      </h1>
+    </nuxt-link>
+
+    <h2>Get infos on latest movies</h2>
   </a-layout-header>
 </template>
 
