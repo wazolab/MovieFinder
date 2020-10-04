@@ -18,6 +18,9 @@ export const mutations = {
 };
 
 export const actions = {
+  //
+  // Fetching movies on OMDb API
+  //
   async getMovies({ commit, state }) {
     commit("setLoading", true);
 
@@ -32,11 +35,13 @@ export const actions = {
       .then(response => {
         if (response.Response === "False") throw new Error(response.Error);
 
+        // Populate Vuex store with response data
         commit("setNbResults", response.totalResults);
         commit("setMovies", response.Search);
         commit("setError", null);
       })
       .catch(e => {
+        // Populate Vuex store with response error
         commit("setMovies", []);
         commit("setNbResults", 0);
         commit("setError", e.message);
@@ -45,6 +50,10 @@ export const actions = {
         commit("setLoading", false);
       });
   },
+
+  //
+  // Fetching movie by ID on OMDb API
+  //
   async getDirector({}, id) {
     return await this.$axios
       .$get("", {
@@ -61,6 +70,7 @@ export const actions = {
       })
       .catch(e => commit("setError", e.message));
   },
+  // Add Director's field for movies into the Vuex store
   setDirectors({ state, dispatch, commit }) {
     commit("setLoading", true);
 
