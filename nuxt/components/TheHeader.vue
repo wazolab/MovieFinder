@@ -42,4 +42,19 @@ h2 {
   height: 48px;
   margin: 0 12px 0 0;
 }
+
+@media screen and (max-width: 414px) {
+  .NuxtLogo {
+    width: 28px;
+    height: 28px;
+  }
+
+  h1 {
+    font-size: 18px;
+  }
+
+  h2 {
+    display: none;
+  }
+}
 </style>

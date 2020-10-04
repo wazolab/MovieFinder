@@ -16,7 +16,8 @@
     "ant-design-vue": "^1.6.5",
     "core-js": "^3.6.5",
     "lodash": "^4.17.20",
-    "nuxt": "^2.14.5"
+    "nuxt": "^2.14.5",
+    "vue-carousel": "^0.18.0"
   },
   "devDependencies": {
     "@vue/test-utils": "^1.1.0",

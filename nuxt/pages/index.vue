@@ -3,7 +3,7 @@
     <TheHeader />
     <a-layout-content>
       <a-row type="flex" align="middle" justify="center" style="height: 100%;">
-        <a-col :span="12">
+        <a-col :xs="18" :md="12" :lg="8">
           <SearchInput />
         </a-col>
       </a-row>
