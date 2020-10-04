@@ -4,7 +4,7 @@ export default {
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: "movie-finder",
+    title: "MovieFinder",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -33,7 +33,7 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: "http://localhost:3000"
+    baseURL: "http://www.omdbapi.com"
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
