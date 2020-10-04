@@ -14,7 +14,6 @@
           <a-carousel arrows dot-position="top">
             <div
               slot="prevArrow"
-              slot-scope="props"
               class="custom-slick-arrow"
               style="left: 10px;zIndex: 1"
             >
@@ -22,7 +21,6 @@
             </div>
             <div
               slot="nextArrow"
-              slot-scope="props"
               class="custom-slick-arrow"
               style="right: 10px"
             >
