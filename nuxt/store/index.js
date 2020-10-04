@@ -1,5 +1,3 @@
-import { resolve } from "core-js/fn/promise";
-
 export const strict = false;
 
 export const state = () => ({
