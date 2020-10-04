@@ -3,54 +3,16 @@
     <TheHeader />
     <a-layout-content>
       <a-row type="flex" align="middle" justify="center" style="height: 100%;">
-        <a-col :span="12">
-          <nuxt-link to="/">
-            <a-button type="primary"> <a-icon type="left" />Go back </a-button>
-          </nuxt-link>
-
-          <h3 style="color: #FFFFFF;">
-            Your search: "{{ search }}" ({{ nbResults }} match)
-          </h3>
-          <a-carousel arrows dot-position="top">
-            <div
-              slot="prevArrow"
-              class="custom-slick-arrow"
-              style="left: 10px;zIndex: 1"
-            >
-              <a-icon type="left-circle" />
-            </div>
-            <div
-              slot="nextArrow"
-              class="custom-slick-arrow"
-              style="right: 10px"
-            >
-              <a-icon type="right-circle" />
-            </div>
-            <a-card
-              :bordered="false"
-              :key="movie.imdbID"
-              v-for="movie in movies"
-            >
-              <img
-                slot="cover"
-                :alt="movie.Title"
-                :src="
-                  movie.Poster === 'N/A'
-                    ? 'https://place-hold.it/285x380'
-                    : movie.Poster
-                "
-              />
-              <a-card-meta :title="movie.Title">
-                <template slot="description">
-                  {{ movie.Director }}
-                  -
-                  <span style="font-size: 12px; font-style: oblique;">{{
-                    movie.Year
-                  }}</span>
-                </template>
-              </a-card-meta>
-            </a-card>
-          </a-carousel>
+        <a-col :xs="20" :md="18">
+          <a-page-header
+            :ghost="false"
+            :title="`Your search : &quot;${search}&quot;`"
+            :sub-title="`${nbResults} match`"
+            @back="() => $router.push('/')"
+          >
+            <Carousel v-if="!error" :dataSource="movies" />
+            <a-alert v-else :message="error" type="error" show-icon />
+          </a-page-header>
         </a-col>
       </a-row>
     </a-layout-content>
@@ -65,19 +27,22 @@ export default {
   middleware: "redirect",
   async asyncData({ store }) {
     await store.dispatch("getMovies");
+
+    await store.dispatch("setDirectors");
   },
   computed: {
     ...mapState({
       search: "search",
       movies: "movies",
       nbResults: "nbResults",
-      error: "error"
+      error: "error",
+      loading: "loading"
     })
   }
 };
 </script>
 
-<style scoped>
+<style>
 #main {
   height: 100vh;
   width: 100%;
@@ -88,28 +53,49 @@ export default {
   background-image: url("~assets/background.jpg");
 }
 
-.ant-carousel >>> .slick-slide {
-  text-align: center;
-  overflow: hidden;
+.VueCarousel-navigation-prev {
+  left: -8px;
 }
 
-.ant-carousel >>> .slick-slide .ant-card {
-  width: 285px !important;
+.VueCarousel-navigation-next {
+  right: -8px;
 }
 
-.ant-carousel >>> .custom-slick-arrow {
-  width: 25px;
-  height: 25px;
-  font-size: 25px;
-  color: #fff;
-  background-color: rgba(31, 45, 61, 0.11);
-  opacity: 0.3;
+.ant-page-header {
+  background-color: #f5f5f5;
+  padding: 24px 44px;
 }
 
-.ant-carousel >>> .custom-slick-arrow:before {
-  display: none;
+.ant-page-header-content {
+  overflow: unset;
 }
-.ant-carousel >>> .custom-slick-arrow:hover {
-  opacity: 0.5;
+
+.VueCarousel-slide {
+  max-width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .VueCarousel-slide {
+    max-width: 50%;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .VueCarousel-slide {
+    max-width: 33.333333%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .VueCarousel-slide {
+    max-width: 25%;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .ant-page-header-heading-sub-title {
+    width: 100%;
+    text-align: center;
+  }
 }
 </style>

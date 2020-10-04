@@ -5,7 +5,7 @@ export const state = () => ({
   movies: [],
   nbResults: 0,
   loading: false,
-  error: ""
+  error: null
 });
 
 export const mutations = {
@@ -18,50 +18,62 @@ export const mutations = {
 };
 
 export const actions = {
-  async getMovies({ commit, state, dispatch }) {
+  async getMovies({ commit, state }) {
     commit("setLoading", true);
-    const response = await this.$axios.$get("", {
-      params: {
-        apikey: "a4bf96a7",
-        s: state.search,
-        type: "movie"
-      }
-    });
 
-    if (response.Response === "True") {
-      commit("setNbResults", response.totalResults);
-      dispatch("setDirectors", response.Search).then(function(res) {
-        console.log(res);
-        commit("setMovies", res);
+    return await this.$axios
+      .$get("", {
+        params: {
+          apikey: "a4bf96a7",
+          s: state.search,
+          type: "movie"
+        }
+      })
+      .then(response => {
+        if (response.Response === "False") throw new Error(response.Error);
+
+        commit("setNbResults", response.totalResults);
+        commit("setMovies", response.Search);
+        commit("setError", null);
+      })
+      .catch(e => {
+        commit("setMovies", []);
+        commit("setNbResults", 0);
+        commit("setError", e.message);
+      })
+      .finally(() => {
+        commit("setLoading", false);
       });
-    } else if (response.Response === "False") {
-      commit("setMovies", []);
-      commit("setNbResults", 0);
-      commit("setError", response.Error);
-    }
-
-    commit("setLoading", false);
   },
   async getDirector({}, id) {
-    const response = await this.$axios.$get("", {
-      params: {
-        apikey: "a4bf96a7",
-        i: id,
-        type: "movie"
-      }
+    return await this.$axios
+      .$get("", {
+        params: {
+          apikey: "a4bf96a7",
+          i: id,
+          type: "movie"
+        }
+      })
+      .then(response => {
+        if (response.Response === "False") throw new Error(response.Error);
+
+        return response.Director;
+      })
+      .catch(e => commit("setError", e.message));
+  },
+  setDirectors({ state, dispatch, commit }) {
+    commit("setLoading", true);
+
+    let tmp = [];
+    state.movies.forEach(async movie => {
+      return await dispatch("getDirector", movie.imdbID).then(director => {
+        movie.Director = director;
+        tmp.push(movie);
+      });
     });
 
-    if (response.Response === "True") return response.Director;
-    else if (response.Response === "False") throw new Error(response.Error);
-  },
-  setDirectors({ dispatch }, data) {
-    let tmp = [];
-    data.forEach(async (movie, index) => {
-      const director = await dispatch("getDirector", movie.imdbID);
-      movie.Director = director;
-      tmp.push(movie);
-    });
-    return tmp;
+    commit("setMovies", tmp);
+    commit("setLoading", false);
   }
 };
 
